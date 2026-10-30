@@ -1,0 +1,665 @@
+
+/* =========================================
+   BANK OF SPAIN — CUSTOMER DASHBOARD
+   ========================================= */
+
+:root {
+    --background: #0b0d0d;
+    --surface: #141818;
+    --surface-light: #202424;
+    --gold: #c49a58;
+    --gold-light: #e6bd80;
+    --text: #f0ece4;
+    --muted: #a8a197;
+    --border: rgba(196, 154, 88, 0.25);
+    --green: #8bd5a5;
+    --font: Georgia, "Times New Roman", serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--background);
+    color: var(--text);
+    font-family: var(--font);
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+}
+
+/* MAIN LAYOUT */
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: #111414;
+    border-right: 1px solid var(--border);
+    padding: 38px 25px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding-bottom: 45px;
+    border-bottom: 1px solid var(--border);
+}
+
+.brand-symbol {
+    width: 43px;
+    height: 43px;
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 29px;
+}
+
+.brand h2 {
+    font-size: 14px;
+    letter-spacing: 3px;
+    font-weight: normal;
+}
+
+.brand p {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-top: 6px;
+}
+
+.navigation {
+    margin-top: 45px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 13px;
+    font-size: 14px;
+    color: var(--muted);
+    border: 1px solid transparent;
+    transition: 0.25s ease;
+}
+
+.nav-link span {
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--gold-light);
+    background: rgba(196, 154, 88, 0.08);
+    border-color: var(--border);
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+}
+
+.sidebar-bottom > p {
+    color: var(--gold);
+    font-size: 9px;
+    letter-spacing: 2px;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.logout-button {
+    width: 100%;
+    padding: 13px;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.25s;
+}
+
+.logout-button:hover {
+    color: var(--gold-light);
+    border-color: var(--gold);
+}
+
+/* MAIN CONTENT */
+
+.main-content {
+    width: calc(100% - 260px);
+    margin-left: 260px;
+    padding: 45px 55px;
+    max-width: 1600px;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border);
+}
+
+.eyebrow {
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    margin-bottom: 10px;
+}
+
+.topbar h1 {
+    font-size: 29px;
+    font-weight: normal;
+}
+
+.customer-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-avatar {
+    width: 43px;
+    height: 43px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-light);
+    font-size: 20px;
+}
+
+.customer-name {
+    font-size: 14px;
+}
+
+.customer-username {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+}
+
+/* WELCOME SECTION */
+
+.welcome-section {
+    padding: 48px 0 32px;
+}
+
+.welcome-section h2 {
+    font-size: clamp(25px, 3vw, 36px);
+    font-weight: normal;
+    line-height: 1.4;
+}
+
+.welcome-section h2 span {
+    color: var(--gold-light);
+}
+
+.welcome-section > p:last-child {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 12px;
+}
+
+/* BALANCE CARD */
+
+.balance-card {
+    padding: 35px 38px;
+    background:
+            radial-gradient(
+                    circle at 90% 10%,
+                    rgba(196, 154, 88, 0.15),
+                    transparent 45%
+            ),
+            linear-gradient(120deg, #252019, #171a19);
+    border: 1px solid rgba(196, 154, 88, 0.42);
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.balance-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.balance-header > p {
+    color: var(--gold-light);
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.account-status {
+    color: var(--green);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    border: 1px solid rgba(139, 213, 165, 0.3);
+    padding: 7px 10px;
+}
+
+.balance-card > h2 {
+    font-size: clamp(35px, 5vw, 49px);
+    font-weight: normal;
+    margin: 30px 0 35px;
+}
+
+.balance-card > h2 > span:first-child {
+    color: var(--gold-light);
+    font-size: 31px;
+    margin-right: 8px;
+}
+
+.account-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 65px;
+    padding-top: 23px;
+    border-top: 1px solid var(--border);
+}
+
+.account-details p {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    margin-bottom: 9px;
+}
+
+.account-details strong {
+    font-size: 13px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+}
+
+/* SECTION HEADINGS */
+
+.quick-actions,
+.transactions-section {
+    margin-top: 55px;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 23px;
+}
+
+.section-heading h2 {
+    font-size: 25px;
+    font-weight: normal;
+}
+
+/* QUICK ACTION CARDS */
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.action-card {
+    min-height: 190px;
+    padding: 23px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: 0.25s ease;
+}
+
+a.action-card:hover {
+    background: #1c201f;
+    border-color: var(--gold);
+    transform: translateY(-4px);
+}
+
+.action-number {
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.action-card h3 {
+    font-size: 17px;
+    font-weight: normal;
+    margin-top: 23px;
+}
+
+.action-card p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+    margin-top: 9px;
+    max-width: 240px;
+}
+
+.action-arrow {
+    position: absolute;
+    right: 22px;
+    bottom: 20px;
+    color: var(--gold-light);
+    font-size: 22px;
+}
+
+.coming-label {
+    color: var(--gold);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    margin-top: auto;
+    padding-top: 15px;
+}
+
+.coming-soon {
+    opacity: 0.7;
+}
+
+/* TRANSACTION TABLE */
+
+.transaction-table {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.table-header,
+.transaction-row {
+    display: grid;
+    grid-template-columns: 1.15fr 1.5fr 1.2fr 1fr 0.8fr;
+    gap: 12px;
+    align-items: center;
+}
+
+.table-header {
+    padding: 19px 22px;
+    background: #1b201f;
+    color: var(--gold);
+    font-size: 9px;
+    letter-spacing: 1.3px;
+    border-bottom: 1px solid var(--border);
+}
+
+.transaction-row {
+    padding: 20px 22px;
+    border-bottom: 1px solid rgba(196, 154, 88, 0.12);
+    font-size: 12px;
+}
+
+.transaction-row:last-child {
+    border-bottom: none;
+}
+
+.transaction-row > div {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.transaction-row > div > span {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.transaction-row > div > strong {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.transaction-status {
+    display: inline-block;
+    padding: 5px 8px;
+    color: var(--green) !important;
+    background: rgba(139, 213, 165, 0.08);
+    border: 1px solid rgba(139, 213, 165, 0.2);
+    font-size: 9px;
+}
+
+.empty-state {
+    padding: 45px 20px;
+    text-align: center;
+}
+
+.empty-state h3 {
+    font-weight: normal;
+    font-size: 18px;
+}
+
+.empty-state p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+/* FOOTER */
+
+.dashboard-footer {
+    margin-top: 60px;
+    padding: 22px 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.dashboard-footer p {
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+}
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 1100px) {
+
+    .main-content {
+        padding: 35px 30px;
+    }
+
+    .action-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .action-card:last-child {
+        grid-column: span 2;
+    }
+
+    .table-header,
+    .transaction-row {
+        grid-template-columns: 1fr 1.2fr 1fr 0.9fr;
+    }
+
+    .table-header > span:last-child,
+    .transaction-row > div:last-child {
+        display: none;
+    }
+}
+
+@media (max-width: 750px) {
+
+    .sidebar {
+        width: 75px;
+        padding: 25px 10px;
+        align-items: center;
+    }
+
+    .brand {
+        border: none;
+        padding-bottom: 20px;
+    }
+
+    .brand > div {
+        display: none;
+    }
+
+    .brand-symbol {
+        width: 43px;
+        height: 43px;
+    }
+
+    .navigation {
+        width: 100%;
+        margin-top: 25px;
+    }
+
+    .nav-link {
+        justify-content: center;
+        padding: 14px 5px;
+        font-size: 0;
+    }
+
+    .nav-link span {
+        font-size: 12px;
+    }
+
+    .sidebar-bottom > p {
+        display: none;
+    }
+
+    .logout-button {
+        font-size: 0;
+        padding: 10px 3px;
+    }
+
+    .logout-button::after {
+        content: "↗";
+        font-size: 17px;
+    }
+
+    .main-content {
+        width: calc(100% - 75px);
+        margin-left: 75px;
+        padding: 28px 20px;
+    }
+
+    .topbar h1 {
+        font-size: 24px;
+    }
+
+    .customer-name {
+        font-size: 12px;
+    }
+
+    .customer-username {
+        font-size: 10px;
+    }
+
+    .welcome-section {
+        padding-top: 35px;
+    }
+
+    .account-details {
+        gap: 25px;
+    }
+
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-card:last-child {
+        grid-column: auto;
+    }
+
+    .table-header {
+        display: none;
+    }
+
+    .transaction-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .transaction-row > div:last-child {
+        display: block;
+    }
+
+    .dashboard-footer {
+        flex-direction: column;
+        line-height: 1.8;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .main-content {
+        padding: 22px 14px;
+    }
+
+    .customer-profile {
+        gap: 7px;
+    }
+
+    .profile-avatar {
+        width: 35px;
+        height: 35px;
+    }
+
+    .balance-card {
+        padding: 25px 20px;
+    }
+
+    .balance-header > p {
+        font-size: 9px;
+    }
+
+    .account-status {
+        font-size: 8px;
+        padding: 5px;
+    }
+
+    .account-details {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .section-heading h2 {
+        font-size: 21px;
+    }
+}
+
+/* Transaction debit and credit colours */
+
+.debit-amount {
+    color: #e47770 !important;
+    font-weight: bold;
+}
+
+.credit-amount {
+    color: #36b879 !important;
+    font-weight: bold;
+}

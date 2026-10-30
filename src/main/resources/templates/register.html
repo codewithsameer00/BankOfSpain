@@ -1,0 +1,294 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bank of Spain | Create Account</title>
+
+    <link rel="stylesheet" th:href="@{/css/register.css}">
+</head>
+
+<body>
+
+<div class="page-shell">
+
+    <main class="register-card">
+
+        <!-- LEFT BRANDING PANEL -->
+        <section class="brand-panel">
+
+            <div class="brand-seal">BS</div>
+
+            <p class="eyebrow">PRIVATE DIGITAL BANKING</p>
+
+            <h1>BANK <span>OF SPAIN</span></h1>
+
+            <div class="gold-line"></div>
+
+            <h2>Begin your<br>banking journey.</h2>
+
+            <p class="brand-description">
+                Experience secure, elegant and seamless
+                digital banking designed around you.
+            </p>
+
+            <div class="brand-footer">
+                TRUST · SECURITY · EXCELLENCE
+            </div>
+
+        </section>
+
+
+        <!-- RIGHT REGISTRATION PANEL -->
+        <section class="form-panel">
+
+            <p class="eyebrow">NEW CLIENT REGISTRATION</p>
+
+            <h2>Create your account<span>.</span></h2>
+
+            <p class="form-description">
+                Please provide your details to open your account.
+            </p>
+
+
+            <form th:action="@{/register}"
+                  th:object="${registrationRequest}"
+                  method="post"
+                  id="registrationForm">
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+                <!-- PERSONAL INFORMATION -->
+
+                <div class="section-heading">
+                    <span>01</span> PERSONAL INFORMATION
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group full-width">
+                        <label for="fullName">FULL NAME *</label>
+                        <input type="text"
+                               id="fullName"
+                               th:field="*{fullName}"
+                               placeholder="Enter your full name"
+                               maxlength="100"
+                               required>
+                        <small class="field-error"
+                               th:errors="*{fullName}"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fatherName">FATHER'S NAME</label>
+                        <input type="text"
+                               id="fatherName"
+                               th:field="*{fatherName}"
+                               placeholder="Father's name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="motherName">MOTHER'S NAME</label>
+                        <input type="text"
+                               id="motherName"
+                               th:field="*{motherName}"
+                               placeholder="Mother's name">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="demoAddress">ADDRESS</label>
+                        <textarea id="demoAddress"
+                                  th:field="*{demoAddress}"
+                                  placeholder="Enter your address"
+                                  rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateOfBirth">DATE OF BIRTH *</label>
+                        <input type="text"
+                               id="dateOfBirth"
+                               th:field="*{dateOfBirth}"
+                               placeholder="DD-MM-YYYY"
+                               pattern="(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-[0-9]{4}"
+                               maxlength="10"
+                               required>
+                        <small class="field-error"
+                               th:errors="*{dateOfBirth}"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">GENDER *</label>
+                        <select id="gender"
+                                th:field="*{gender}"
+                                required>
+                            <option value="">Select gender</option>
+                            <option value="MALE">Male</option>
+                            <option value="FEMALE">Female</option>
+                            <option value="OTHER">Other</option>
+                            <option value="PREFER_NOT_TO_SAY">
+                                Prefer not to say
+                            </option>
+                        </select>
+                        <small class="field-error"
+                               th:errors="*{gender}"></small>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="maritalStatus">MARITAL STATUS *</label>
+                        <select id="maritalStatus"
+                                th:field="*{maritalStatus}"
+                                required>
+                            <option value="">Select marital status</option>
+                            <option value="SINGLE">Single</option>
+                            <option value="MARRIED">Married</option>
+                        </select>
+                        <small class="field-error"
+                               th:errors="*{maritalStatus}"></small>
+                    </div>
+
+                </div>
+
+
+                <!-- ACCOUNT CREDENTIALS -->
+
+                <div class="section-heading">
+                    <span>02</span> ACCOUNT CREDENTIALS
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group full-width">
+                        <label for="username">USERNAME *</label>
+                        <input type="text"
+                               id="username"
+                               th:field="*{username}"
+                               placeholder="Choose a username"
+                               minlength="4"
+                               maxlength="50"
+                               autocomplete="username"
+                               required>
+                        <small class="field-error"
+                               th:errors="*{username}"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">PASSWORD *</label>
+                        <input type="password"
+                               id="password"
+                               th:field="*{password}"
+                               placeholder="Minimum 8 characters"
+                               minlength="8"
+                               maxlength="72"
+                               autocomplete="new-password"
+                               required>
+                        <small class="field-error"
+                               th:errors="*{password}"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">
+                            CONFIRM PASSWORD *
+                        </label>
+                        <input type="password"
+                               id="confirmPassword"
+                               placeholder="Repeat your password"
+                               minlength="8"
+                               maxlength="72"
+                               autocomplete="new-password"
+                               required>
+                        <small id="passwordError"
+                               class="field-error"></small>
+                    </div>
+
+                </div>
+
+
+                <!-- TERMS -->
+
+                <div class="terms-section">
+
+                    <label class="terms-label">
+                        <input type="checkbox"
+                               id="terms"
+                               required>
+
+                        <span>
+                            I agree to the
+                            <a href="#" target="_blank">
+                                Terms and Conditions
+                            </a>
+                            and understand this is a demo banking
+                            application.
+                        </span>
+                    </label>
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button type="submit" class="register-button">
+                    Create Account <span>→</span>
+                </button>
+
+                <div class="login-section">
+                    Already have an account?
+                    <a th:href="@{/login}">Sign in</a>
+                </div>
+
+                <div class="security-note">
+                    ◆ Your information is securely processed.
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+    const form = document.getElementById("registrationForm");
+    const password = document.getElementById("password");
+    const confirmPassword =
+        document.getElementById("confirmPassword");
+    const passwordError = document.getElementById("passwordError");
+
+    function checkPassword() {
+        if (confirmPassword.value &&
+            password.value !== confirmPassword.value) {
+
+            confirmPassword.setCustomValidity(
+                "Passwords do not match."
+            );
+
+            passwordError.textContent =
+                "Passwords do not match.";
+
+        } else {
+            confirmPassword.setCustomValidity("");
+            passwordError.textContent = "";
+        }
+    }
+
+    password.addEventListener("input", checkPassword);
+    confirmPassword.addEventListener("input", checkPassword);
+
+    form.addEventListener("submit", function(event) {
+        checkPassword();
+
+        if (!form.checkValidity()) {
+            event.preventDefault();
+            form.reportValidity();
+        }
+    });
+</script>
+
+</body>
+</html>

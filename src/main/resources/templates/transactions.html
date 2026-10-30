@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bank of Spain | Transactions</title>
+
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <span class="brand-symbol">B</span>
+            <div>
+                <h2>BANK OF SPAIN</h2>
+                <p>PRIVATE BANKING</p>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <a th:href="@{/dashboard}" class="nav-link">
+                <span>01</span> Overview
+            </a>
+
+            <a th:href="@{/transactions}" class="nav-link active">
+                <span>02</span> Transactions
+            </a>
+
+            <a th:href="@{/transfer}" class="nav-link">
+                <span>03</span> Transfer Money
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <p>TRUST · SECURITY · EXCELLENCE</p>
+
+            <form th:action="@{/logout}" method="post">
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+                <button type="submit" class="logout-button">
+                    Sign Out
+                </button>
+            </form>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div>
+                <p class="eyebrow">CUSTOMER PORTAL</p>
+                <h1>Transactions</h1>
+            </div>
+
+            <div class="customer-profile">
+
+                <div class="profile-avatar">
+                    <span th:text="${#strings.substring(customer.fullName, 0, 1)}">S</span>
+                </div>
+
+                <div>
+                    <p class="customer-name"
+                       th:text="${customer.fullName}">
+                        Customer Name
+                    </p>
+
+                    <p class="customer-username"
+                       th:text="${customer.username}">
+                        username
+                    </p>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE INTRODUCTION -->
+        <section class="welcome-section">
+
+            <p class="eyebrow">ACCOUNT ACTIVITY</p>
+
+            <h2>Your Transaction History.</h2>
+
+            <p>
+                A complete record of your account activity,
+                thoughtfully maintained.
+            </p>
+
+        </section>
+
+
+        <!-- ACCOUNT INFORMATION -->
+        <section class="balance-card">
+
+            <div class="balance-header">
+                <p>AVAILABLE BALANCE</p>
+                <span class="account-status">ACTIVE ACCOUNT</span>
+            </div>
+
+            <h2>
+                <span>₹</span>
+                <span th:text="${#numbers.formatDecimal(account.balance, 1, 'COMMA', 2, 'POINT')}">
+                    0.00
+                </span>
+            </h2>
+
+            <div class="account-details">
+
+                <div>
+                    <p>ACCOUNT HOLDER</p>
+                    <strong th:text="${customer.fullName}">
+                        Customer Name
+                    </strong>
+                </div>
+
+                <div>
+                    <p>ACCOUNT NUMBER</p>
+                    <strong th:text="${account.accountNumber}">
+                        000000000000
+                    </strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- COMPLETE TRANSACTION HISTORY -->
+        <section class="transactions-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="eyebrow">ACCOUNT RECORDS</p>
+                    <h2>All Transactions</h2>
+                </div>
+
+                <span class="account-status"
+                      th:text="${transactions.size()} + ' RECORDS'">
+                    0 RECORDS
+                </span>
+
+            </div>
+
+
+            <div class="transaction-table">
+
+                <!-- TABLE HEADER -->
+                <div class="table-header">
+                    <span>TRANSACTION</span>
+                    <span>DESCRIPTION</span>
+                    <span>DATE</span>
+                    <span>AMOUNT</span>
+                    <span>STATUS</span>
+                </div>
+
+
+                <!-- EMPTY STATE -->
+                <div th:if="${#lists.isEmpty(transactions)}"
+                     class="empty-state">
+
+                    <h3>No transactions yet</h3>
+
+                    <p>
+                        Your account activity will appear here
+                        once you make your first transaction.
+                    </p>
+
+                </div>
+
+
+                <!-- TRANSACTION RECORDS -->
+                <div th:each="transaction : ${transactions}"
+                     class="transaction-row">
+
+
+                    <div>
+                        <strong th:switch="${transaction.transactionType}">
+
+                            <span th:case="'DEPOSIT'">Deposit</span>
+
+                            <span th:case="'WITHDRAWAL'">Withdrawal</span>
+
+                            <span th:case="'TRANSFER_SENT'">Transfer Sent</span>
+
+                            <span th:case="'TRANSFER_RECEIVED'">Transfer Received</span>
+
+                            <span th:case="*" th:text="${transaction.transactionType}">
+            Transaction
+        </span>
+
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <span th:text="${transaction.description}">
+                            Transaction description
+                        </span>
+                    </div>
+
+                    <div>
+                        <span th:text="${#temporals.format(transaction.transactionDate, 'dd MMM yyyy, hh:mm a')}">
+                            30 Oct 2026, 03:45 PM
+                        </span>
+                    </div>
+
+                    <div>
+
+                        <!-- DEBIT TRANSACTIONS -->
+                        <strong class="debit-amount"
+                                th:if="${transaction.transactionType == 'TRANSFER_SENT' or transaction.transactionType == 'WITHDRAWAL'}"
+                                th:text="${'- ₹' + #numbers.formatDecimal(transaction.amount, 1, 'COMMA', 2, 'POINT')}">
+                            - ₹0.00
+                        </strong>
+
+                        <!-- CREDIT TRANSACTIONS -->
+                        <strong class="credit-amount"
+                                th:unless="${transaction.transactionType == 'TRANSFER_SENT' or transaction.transactionType == 'WITHDRAWAL'}"
+                                th:text="${'+ ₹' + #numbers.formatDecimal(transaction.amount, 1, 'COMMA', 2, 'POINT')}">
+                            + ₹0.00
+                        </strong>
+
+                    </div>
+
+                    <div>
+                        <span class="transaction-status"
+                              th:text="${transaction.status}">
+                            SUCCESS
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="dashboard-footer">
+
+            <p>© 2026 BANK OF SPAIN · DEMO BANKING PLATFORM</p>
+
+            <p>TRUST · SECURITY · EXCELLENCE</p>
+
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

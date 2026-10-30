@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank of Spain | Secure Banking</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+
+<div class="page-shell">
+
+    <main class="login-card">
+
+        <section class="brand-panel">
+            <div class="brand-seal">BS</div>
+
+            <p class="eyebrow">PRIVATE DIGITAL BANKING</p>
+
+            <h1>BANK <span>OF SPAIN</span></h1>
+
+            <div class="gold-line"></div>
+
+            <h2>Banking with<br>Elegance.</h2>
+
+            <p class="brand-description">
+                A secure and seamless banking experience,
+                designed around you.
+            </p>
+
+            <div class="brand-footer">
+                TRUST · SECURITY · EXCELLENCE
+            </div>
+        </section>
+
+        <section class="form-panel">
+
+            <p class="eyebrow">CLIENT ACCESS</p>
+
+            <h2>Welcome back<span>.</span></h2>
+
+            <p class="form-description">
+                Please enter your credentials to continue.
+            </p>
+
+            <div class="message error" th:if="${param.error}">
+                Invalid username or password.
+            </div>
+
+            <div class="message success" th:if="${param.logout}">
+                You have successfully logged out.
+            </div>
+
+            <form th:action="@{/login}" method="post">
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+                <div class="form-group">
+                    <label for="username">USERNAME</label>
+                    <input type="text"
+                           id="username"
+                           name="username"
+                           placeholder="Enter your username"
+                           autocomplete="username"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">PASSWORD</label>
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           placeholder="Enter your password"
+                           autocomplete="current-password"
+                           required>
+                </div>
+
+                <button type="submit" class="login-button">
+                    Sign In <span>→</span>
+                </button>
+
+            </form>
+
+            <div class="signup-section">
+                <span>Don't have an account?</span>
+                <a th:href="@{/register}">Create an account</a>
+            </div>
+
+            <div class="security-note">
+                <span>◆</span> Your banking information is protected.
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

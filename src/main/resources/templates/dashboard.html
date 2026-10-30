@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bank of Spain | Dashboard</title>
+
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <span class="brand-symbol">B</span>
+            <div>
+                <h2>BANK OF SPAIN</h2>
+                <p>PRIVATE BANKING</p>
+            </div>
+        </div>
+
+        <nav class="navigation">
+            <a th:href="@{/dashboard}" class="nav-link active">
+                <span>01</span> Overview
+            </a>
+
+            <a th:href="@{/transactions}" class="nav-link">
+                <span>02</span> Transactions
+            </a>
+
+            <a th:href="@{/transfer}" class="nav-link">
+                <span>03</span> Transfer Money
+            </a>
+
+            <a th:href="@{/deposit}" class="nav-link">
+                <span>04</span> Deposit Money
+            </a>
+
+            <a th:href="@{/withdraw}" class="nav-link">
+                <span>05</span> Withdraw Money
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <p>TRUST · SECURITY · EXCELLENCE</p>
+
+            <form th:action="@{/logout}" method="post">
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+                <button type="submit" class="logout-button">
+                    Sign Out
+                </button>
+            </form>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">CUSTOMER PORTAL</p>
+                <h1>Overview</h1>
+            </div>
+
+            <div class="customer-profile">
+                <div class="profile-avatar">
+                    <span th:text="${#strings.substring(customer.fullName, 0, 1)}">S</span>
+                </div>
+
+                <div>
+                    <p class="customer-name"
+                       th:text="${customer.fullName}">
+                        Customer Name
+                    </p>
+
+                    <p class="customer-username"
+                       th:text="${customer.username}">
+                        username
+                    </p>
+                </div>
+            </div>
+        </header>
+
+
+        <!-- WELCOME SECTION -->
+        <section class="welcome-section">
+            <p class="eyebrow">YOUR FINANCIAL OVERVIEW</p>
+
+            <h2>
+                Welcome back,
+                <span th:text="${customer.fullName}">Customer</span>.
+            </h2>
+
+            <p>Your banking, thoughtfully managed.</p>
+        </section>
+
+
+        <!-- ACCOUNT BALANCE -->
+        <section class="balance-card">
+
+            <div class="balance-header">
+                <p>AVAILABLE BALANCE</p>
+                <span class="account-status">ACTIVE ACCOUNT</span>
+            </div>
+
+            <h2>
+                <span>₹</span>
+                <span th:text="${#numbers.formatDecimal(account.balance, 1, 'COMMA', 2, 'POINT')}">
+                    0.00
+                </span>
+            </h2>
+
+            <div class="account-details">
+                <div>
+                    <p>ACCOUNT HOLDER</p>
+                    <strong th:text="${customer.fullName}">
+                        Customer Name
+                    </strong>
+                </div>
+
+                <div>
+                    <p>ACCOUNT NUMBER</p>
+                    <strong th:text="${account.accountNumber}">
+                        000000000000
+                    </strong>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- QUICK ACTIONS -->
+        <section class="quick-actions">
+
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">BANKING SERVICES</p>
+                    <h2>Quick Actions</h2>
+                </div>
+            </div>
+
+            <div class="action-grid">
+
+                <a th:href="@{/transfer}" class="action-card">
+                    <span class="action-number">01</span>
+                    <h3>Transfer Money</h3>
+                    <p>Send money to another Bank of Spain account.</p>
+                    <span class="action-arrow">→</span>
+                </a>
+
+                <a th:href="@{/deposit}" class="action-card">
+                    <span class="action-number">02</span>
+                    <h3>Deposit Money</h3>
+                    <p>Add funds to your demo bank account.</p>
+                    <span class="action-arrow">→</span>
+                </a>
+
+                <a th:href="@{/withdraw}" class="action-card">
+                    <span class="action-number">03</span>
+                    <h3>Withdraw Money</h3>
+                    <p>Withdraw funds from your demo account.</p>
+                    <span class="action-arrow">→</span>
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- TRANSACTION HISTORY -->
+        <section class="transactions-section" id="transactions">
+
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">ACCOUNT ACTIVITY</p>
+                    <h2>Recent Transactions</h2>
+                </div>
+            </div>
+
+            <div class="transaction-table">
+
+                <div class="table-header">
+                    <span>TRANSACTION</span>
+                    <span>DESCRIPTION</span>
+                    <span>DATE</span>
+                    <span>AMOUNT</span>
+                    <span>STATUS</span>
+                </div>
+
+                <div th:if="${#lists.isEmpty(transactions)}"
+                     class="empty-state">
+
+                    <h3>No transactions yet</h3>
+                    <p>Your account activity will appear here.</p>
+
+                </div>
+
+                <div th:each="transaction : ${transactions}"
+                     class="transaction-row">
+
+                    <div>
+                        <strong th:text="${
+                            transaction.transactionType == 'DEPOSIT' ? 'Deposit' :
+                            transaction.transactionType == 'WITHDRAWAL' ? 'Withdrawal' :
+                            transaction.transactionType == 'TRANSFER_SENT' ? 'Transfer Sent' :
+                            transaction.transactionType == 'TRANSFER_RECEIVED' ? 'Transfer Received' :
+                            transaction.transactionType
+                        }">
+                            Deposit
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span th:text="${transaction.description}">
+                            Transaction description
+                        </span>
+                    </div>
+
+                    <div>
+                        <span th:text="${#temporals.format(transaction.transactionDate, 'dd MMM yyyy, hh:mm a')}">
+                            30 Oct 2026, 03:45 PM
+                        </span>
+                    </div>
+
+                    <div>
+
+                        <!-- DEBIT TRANSACTIONS -->
+                        <strong class="debit-amount"
+                                th:if="${transaction.transactionType == 'TRANSFER_SENT' or transaction.transactionType == 'WITHDRAWAL'}"
+                                th:text="${'- ₹' + #numbers.formatDecimal(transaction.amount, 1, 'COMMA', 2, 'POINT')}">
+                            - ₹0.00
+                        </strong>
+
+                        <!-- CREDIT TRANSACTIONS -->
+                        <strong class="credit-amount"
+                                th:unless="${transaction.transactionType == 'TRANSFER_SENT' or transaction.transactionType == 'WITHDRAWAL'}"
+                                th:text="${'+ ₹' + #numbers.formatDecimal(transaction.amount, 1, 'COMMA', 2, 'POINT')}">
+                            + ₹0.00
+                        </strong>
+
+                    </div>
+
+                    <div>
+                        <span class="transaction-status"
+                              th:text="${transaction.status}">
+                            SUCCESS
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <footer class="dashboard-footer">
+            <p>© 2026 BANK OF SPAIN · DEMO BANKING PLATFORM</p>
+            <p>TRUST · SECURITY · EXCELLENCE</p>
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

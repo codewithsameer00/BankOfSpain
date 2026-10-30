@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bank of Spain | Money Transfer</title>
+
+    <link rel="stylesheet" th:href="@{/css/transfer.css}">
+</head>
+
+<body>
+
+<div class="page-container">
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a th:href="@{/dashboard}" class="brand">
+            <span class="brand-logo">BS</span>
+            <span>BANK <strong>OF SPAIN</strong></span>
+        </a>
+
+        <div class="nav-right">
+            <span class="nav-label">SECURE BANKING</span>
+            <a th:href="@{/logout}" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+
+        <div class="page-heading">
+            <span class="eyebrow">PAYMENTS & TRANSFERS</span>
+            <h1>Transfer <span>Money.</span></h1>
+            <p>Send money securely to another Bank of Spain account.</p>
+        </div>
+
+        <div class="transfer-layout">
+
+            <!-- Transfer Form -->
+            <section class="transfer-card">
+
+                <div class="card-heading">
+                    <div>
+                        <span class="step-number">01</span>
+                        <h2>Transfer Details</h2>
+                    </div>
+                    <span class="secure-label">SECURE TRANSACTION</span>
+                </div>
+
+                <!-- Success Message -->
+                <div class="alert success"
+                     th:if="${successMessage}">
+                    <strong>Transfer Successful!</strong>
+                    <p th:text="${successMessage}"></p>
+                    <p>
+                        Reference:
+                        <span th:text="${transferReference}"></span>
+                    </p>
+                </div>
+
+                <form th:action="@{/transfer}"
+                      th:object="${transferRequest}"
+                      method="post">
+
+                    <div class="alert error"
+                         th:if="${#fields.hasGlobalErrors()}"
+                         th:errors="*{global}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipientAccountNumber">
+                            RECIPIENT ACCOUNT NUMBER
+                        </label>
+
+                        <input
+                                type="text"
+                                id="recipientAccountNumber"
+                                th:field="*{recipientAccountNumber}"
+                                placeholder="Enter recipient's account number"
+                                required
+                        >
+
+                        <small class="field-error"
+                               th:errors="*{recipientAccountNumber}">
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount">TRANSFER AMOUNT (₹)</label>
+
+                        <div class="amount-wrapper">
+                            <span>₹</span>
+
+                            <input
+                                    type="number"
+                                    id="amount"
+                                    th:field="*{amount}"
+                                    placeholder="0.00"
+                                    min="0.01"
+                                    max="99999999999999999.99"
+                                    step="0.01"
+                                    required
+                            >
+                        </div>
+
+                        <small class="field-error"
+                               th:errors="*{amount}">
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">
+                            PAYMENT DESCRIPTION
+                            <span class="optional">(OPTIONAL)</span>
+                        </label>
+
+                        <textarea
+                                id="description"
+                                th:field="*{description}"
+                                placeholder="What's this payment for?"
+                                rows="3"
+                        ></textarea>
+
+                        <small class="field-error"
+                               th:errors="*{description}">
+                        </small>
+                    </div>
+
+                    <div class="security-notice">
+                        <span class="security-icon">◆</span>
+                        <div>
+                            <strong>Protected Transaction</strong>
+                            <p>Your transfer is processed securely.
+                                Please verify the recipient's account number.</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="transfer-button">
+                        Confirm Transfer <span>→</span>
+                    </button>
+
+                </form>
+
+                <a th:href="@{/dashboard}" class="back-link">
+                    ← Back to Dashboard
+                </a>
+
+            </section>
+
+            <!-- Information Panel -->
+            <aside class="information-panel">
+
+                <span class="eyebrow">BANK OF SPAIN</span>
+
+                <h2>Move money.<br>
+                    <span>With confidence.</span>
+                </h2>
+
+                <p>
+                    Experience seamless internal transfers with
+                    our secure digital banking platform.
+                </p>
+
+                <div class="info-divider"></div>
+
+                <div class="info-item">
+                    <span class="info-icon">01</span>
+                    <div>
+                        <strong>Verified Accounts</strong>
+                        <p>Transfers are processed only to existing accounts.</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-icon">02</span>
+                    <div>
+                        <strong>Instant Balance Updates</strong>
+                        <p>Both account balances update after a successful transfer.</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-icon">03</span>
+                    <div>
+                        <strong>Transaction Reference</strong>
+                        <p>Every successful transfer receives a unique reference.</p>
+                    </div>
+                </div>
+
+                <div class="panel-footer">
+                    TRUST · SECURITY · EXCELLENCE
+                </div>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+    <footer>
+        © 2026 Bank of Spain. All rights reserved.
+    </footer>
+
+</div>
+
+</body>
+</html>

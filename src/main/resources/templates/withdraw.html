@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bank of Spain | Withdraw Money</title>
+
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/withdraw.css}">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <span class="brand-symbol">B</span>
+            <div>
+                <h2>BANK OF SPAIN</h2>
+                <p>PRIVATE BANKING</p>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <a th:href="@{/dashboard}" class="nav-link">
+                <span>01</span> Overview
+            </a>
+
+            <a th:href="@{/transactions}" class="nav-link">
+                <span>02</span> Transactions
+            </a>
+
+            <a th:href="@{/transfer}" class="nav-link">
+                <span>03</span> Transfer Money
+            </a>
+
+            <a th:href="@{/deposit}" class="nav-link">
+                <span>04</span> Deposit Money
+            </a>
+
+            <a th:href="@{/withdraw}" class="nav-link active">
+                <span>05</span> Withdraw Money
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <p>TRUST · SECURITY · EXCELLENCE</p>
+
+            <form th:action="@{/logout}" method="post">
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}">
+
+                <button type="submit" class="logout-button">
+                    Sign Out
+                </button>
+
+            </form>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div>
+                <p class="eyebrow">CUSTOMER PORTAL</p>
+                <h1>Withdraw Money</h1>
+            </div>
+
+            <div class="customer-profile">
+
+                <div class="profile-avatar">
+                    <span> B </span>
+                </div>
+
+                <div>
+                    <p class="customer-name">Bank of Spain</p>
+                    <p class="customer-username">DEMO BANKING</p>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- INTRODUCTION -->
+        <section class="welcome-section">
+
+            <p class="eyebrow">ACCOUNT SERVICES</p>
+
+            <h2>Access Your Available Funds.</h2>
+
+            <p>
+                Submit a withdrawal request from your demo bank account.
+            </p>
+
+        </section>
+
+
+        <!-- WITHDRAWAL SECTION -->
+        <section class="withdraw-layout">
+
+            <!-- WITHDRAWAL FORM -->
+            <div class="withdraw-form-card">
+
+                <div class="withdraw-card-heading">
+
+                    <p class="eyebrow">WITHDRAWAL REQUEST</p>
+
+                    <h2>Make a Withdrawal</h2>
+
+                    <p>
+                        Enter the amount you want to withdraw
+                        from your demo bank account.
+                    </p>
+
+                </div>
+
+
+                <!-- SUCCESS MESSAGE -->
+                <div th:if="${successMessage}"
+                     class="withdraw-alert success-alert">
+
+                    <strong th:text="${successMessage}">
+                        Withdrawal successful.
+                    </strong>
+
+                    <p>
+                        Transaction Reference:
+                        <span th:text="${transactionReference}">
+                            Reference
+                        </span>
+                    </p>
+
+                </div>
+
+
+                <!-- ERROR MESSAGE -->
+                <div th:if="${errorMessage}"
+                     class="withdraw-alert error-alert"
+                     th:text="${errorMessage}">
+                    Something went wrong.
+                </div>
+
+
+                <!-- WITHDRAWAL FORM -->
+                <form th:action="@{/withdraw}"
+                      th:object="${withdrawalRequest}"
+                      method="post"
+                      class="withdraw-form">
+
+                    <input type="hidden"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}">
+
+
+                    <div class="form-group">
+
+                        <label for="amount">
+                            WITHDRAWAL AMOUNT (IN INR)
+                        </label>
+
+                        <div class="withdraw-amount-wrapper">
+
+                            <span>₹</span>
+
+                            <input type="number"
+                                   id="amount"
+                                   th:field="*{amount}"
+                                   placeholder="0.00"
+                                   min="0.01"
+                                   step="0.01"
+                                   required>
+
+                        </div>
+
+                        <small class="field-error"
+                               th:if="${#fields.hasErrors('amount')}"
+                               th:errors="*{amount}">
+                            Amount error
+                        </small>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="description">
+                            DESCRIPTION (OPTIONAL)
+                        </label>
+
+                        <input type="text"
+                               id="description"
+                               th:field="*{description}"
+                               placeholder="e.g. Personal expenses"
+                               maxlength="255">
+
+                        <small class="field-error"
+                               th:if="${#fields.hasErrors('description')}"
+                               th:errors="*{description}">
+                            Description error
+                        </small>
+
+                    </div>
+
+
+                    <!-- DEMO NOTICE -->
+                    <div class="withdraw-notice">
+
+                        <strong>WITHDRAWAL NOTICE</strong>
+
+                        <p>
+                            Withdrawals are simulated. The system
+                            will reject requests exceeding your
+                            available account balance.
+                        </p>
+
+                    </div>
+
+
+                    <button type="submit" class="withdraw-submit-button">
+                        Confirm Withdrawal <span>→</span>
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- INFORMATION CARD -->
+            <div class="withdraw-info-card">
+
+                <p class="eyebrow">IMPORTANT INFORMATION</p>
+
+                <h2>Withdrawal Process</h2>
+
+
+                <div class="withdraw-info-item">
+
+                    <span>01</span>
+
+                    <div>
+                        <h3>Enter Amount</h3>
+                        <p>Specify how much money you want to withdraw.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="withdraw-info-item">
+
+                    <span>02</span>
+
+                    <div>
+                        <h3>Balance Verification</h3>
+                        <p>The system checks whether sufficient funds are available.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="withdraw-info-item">
+
+                    <span>03</span>
+
+                    <div>
+                        <h3>Balance Updated</h3>
+                        <p>Your account balance is reduced after successful processing.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="withdraw-info-footer">
+
+                    Every successful withdrawal is permanently
+                    recorded in your transaction history.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="dashboard-footer">
+
+            <p>© 2026 BANK OF SPAIN · DEMO BANKING PLATFORM</p>
+
+            <p>TRUST · SECURITY · EXCELLENCE</p>
+
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>
