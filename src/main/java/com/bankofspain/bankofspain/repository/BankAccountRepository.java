@@ -2,10 +2,7 @@ package com.bankofspain.bankofspain.repository;
 
 import com.bankofspain.bankofspain.com.bankofspain.bankofspain.entity.BankAccount;
 
-import jakarta.persistence.LockModeType;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -20,8 +17,10 @@ public interface BankAccountRepository
 
     boolean existsByAccountNumber(String accountNumber);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT a FROM BankAccount a WHERE a.accountNumber = :accountNumber")
+    @Query(
+        value = "SELECT * FROM bank_accounts WHERE account_number = :accountNumber FOR UPDATE",
+        nativeQuery = true
+    )
     Optional<BankAccount> findByAccountNumberForUpdate(
             @Param("accountNumber") String accountNumber
     );
