@@ -98,7 +98,7 @@ CREATE DATABASE bank_of_spain;
 Clone the repository:
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/codewithsameer00/BankOfSpain.git
 ```
 
 Open the project in IntelliJ IDEA.
